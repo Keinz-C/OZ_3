@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "oz-3"
+version = "0.1.0"
+description = ""
+authors = ["seungwon0113 <dhkd0113@naver.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.2"
+django-restframework = "^0.0.1"
+isort = "^5.13.2"
+mypy = "^1.13.0"
+
+
+[tool.poetry.group.dev.dependencies]
+drf-spectacular = "^0.27.2"
+black = "^24.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
