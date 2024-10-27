@@ -1,4 +1,4 @@
-name: Django check
+name: Django CI
 
 on:
   push:
@@ -28,13 +28,13 @@ jobs:
           sudo rm /etc/localtime
           sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
-      # Start Mysql
-      # https://ovirium.com/blog/how-to-make-mysql-work-in-your-github-actions/
-      - name: Start Mysql
+      - name: Install and Start PostgreSQL
         run: |
-          sudo systemctl start mysql
-          mysql -e "use mysql; FLUSH PRIVILEGES; ALTER USER '${{ env.DB_USER }}'@'localhost' IDENTIFIED BY '${{ env.DB_PASSWORD }}';" -uroot -proot
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          sudo apt-get update
+          sudo apt-get install -y postgresql
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD '${{ env.DB_PASSWORD }}';"
+          sudo -u postgres psql -c "CREATE DATABASE ${{ env.DB_DATABASE }};"
 
       - name: Install Poetry
         run: |

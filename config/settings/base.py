@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # REST_FRAMEWORK
     "drf_spectacular",
     "rest_framework",
+    "psycopg2",
 ]
 
 REST_FRAMEWORK = {
