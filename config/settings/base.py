@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "rest_framework",
     "psycopg2",
+    # THIRD_APPS
+    "users",
+    "accounts",
+    "transaction_history",
 ]
 
 REST_FRAMEWORK = {
