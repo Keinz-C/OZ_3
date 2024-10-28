@@ -28,7 +28,7 @@ jobs:
           sudo rm /etc/localtime
           sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
-      - name: Install and Start PostgreSQL
+      - name: Install and Start PostgreSQL # postgres 설치 및 설정
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql
