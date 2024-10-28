@@ -37,17 +37,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # REST_FRAMEWORK
     "drf_spectacular",
     "rest_framework",
     "psycopg2",
-
     # THIRD_APPS
     "users",
     "accounts",
-    "transaction_history"
-
+    "transaction_history",
 ]
 
 REST_FRAMEWORK = {
