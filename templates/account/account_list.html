@@ -1,9 +1,0 @@
-<h2>계좌 목록</h2>
-<ul>
-    {% for account in accounts %}
-        <li>
-            <a href="{% url 'accounts:account_detail' account.id %}">{{ account.account_number }} - {{ account.bank_code }}</a>
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'accounts:account_create' %}">계좌 추가</a>
