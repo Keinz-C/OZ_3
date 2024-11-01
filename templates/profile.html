@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to OZ 3</title>
+    <title>Profile</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,24 +21,30 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
         }
         .button {
             margin-top: 20px;
             padding: 10px 20px;
             text-decoration: none;
             color: white;
-            background-color: #007bff;
+            background-color: #dc3545;
             border-radius: 5px;
             font-size: 16px;
+            border: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to OZ 3</h1>
-        <p>Hello! Welcome to our platform.</p>
-        <a href="{% url 'login' %}" class="button">Login</a>
-        <a href="{% url 'register' %}" class="button">Register</a>
+        <h2>Welcome, {{ user.name }}</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Nickname:</strong> {{ user.nickname }}</p>
+        <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="button">Logout</button>
+        </form>
     </div>
 </body>
 </html>

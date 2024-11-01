@@ -21,6 +21,10 @@ def hello(request):
 
 
 class UserRegistrationView(View):
+    def get(self, request: HttpRequest) -> JsonResponse:
+        # GET 요청으로 등록 페이지 렌더링
+        return render(request, "register.html")
+
     def post(self, request: HttpRequest) -> JsonResponse:
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -48,8 +52,7 @@ class UserRegistrationView(View):
 
 class UserLoginView(View):
     def get(self, request: HttpRequest) -> JsonResponse:
-        # GET 요청 시 로그인 폼 데이터를 응답하거나 로그인 페이지를 반환하도록 설정합니다.
-        return JsonResponse({"message": "Please use POST to login"}, status=405)
+        return render(request, "login.html")
 
     def post(self, request: HttpRequest) -> JsonResponse:
         email = request.POST.get("email")

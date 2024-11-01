@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+        }
+        .input-field, .button {
+            margin-top: 10px;
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>로그인</h2>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Email" class="input-field" required size="8">
+            <input type="password" name="password" placeholder="Password" class="input-field" required>
+            <button type="submit" class="button">로그인</button>
+        </form>
+        <p>Don't have an account? <a href="{% url 'register' %}">회원가입</a></p>
+    </div>
+</body>
+</html>
