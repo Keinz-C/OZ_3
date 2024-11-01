@@ -10,22 +10,54 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import json
+import os
+from datetime import timedelta
 from pathlib import Path
+
+from django.core.mail.backends.smtp import EmailBackend
+from rest_framework.settings import api_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+secrets_file_path = os.path.join(BASE_DIR, ".config_secret/secrets.json")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-im8@bpwvi$@so!+7w8cp6npw^se*s#5tfy#q7xz2morb0t5dhl"
+if os.path.exists(secrets_file_path):
+    with open(secrets_file_path) as f:
+        SECRET = json.load(f)
+else:
+    raise FileNotFoundError(f"Secrets file not found at {secrets_file_path}")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS: list[str] = []
+
+# REST Framework 설정에 JWT 인증 설정 추가
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+}
+
+# Simple JWT 설정
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),  # 토큰의 유효 시간 설정
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_COOKIE": "access_token",  # 액세스 토큰을 쿠키에 저장
+    "AUTH_COOKIE_REFRESH": "refresh_token",  # 리프레시 토큰을 쿠키에 저장
+    "AUTH_COOKIE_SECURE": True,  # https 환경에서 쿠키 보안 설정
+    "AUTH_COOKIE_HTTP_ONLY": True,  # 쿠키를 HTTP 전용으로 설정해 자바스크립트로 접근 불가
+    "AUTH_COOKIE_PATH": "/",
+    "AUTH_COOKIE_SAMESITE": "Lax",
+}
 
 
 # Application definition
@@ -153,3 +185,14 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 이메일 설정
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.naver.com"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = SECRET["email"]["user"]
+EMAIL_HOST_PASSWORD = SECRET["email"]["password"]
+DEFAULT_FROM_EMAIL = "dhkd0113@naver.com"
+
+# LOGIN
