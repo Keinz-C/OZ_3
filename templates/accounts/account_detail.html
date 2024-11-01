@@ -1,0 +1,9 @@
+<!-- accounts/templates/accounts/account_detail.html -->
+<h2>계좌 정보</h2>
+<p>계좌 번호: {{ account.account_number }}</p>
+<p>은행 코드: {{ account.bank_code }}</p>
+<p>계좌 유형: {{ account.get_account_type_display }}</p>
+<p>잔액: {{ account.balance }}</p>
+
+<a href="{% url 'accounts:account_update' account.id %}">계좌 수정</a>
+<a href="{% url 'accounts:account_list' %}">목록으로 돌아가기</a>

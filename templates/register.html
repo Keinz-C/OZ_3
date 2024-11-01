@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+        }
+        .input-field, .button {
+            margin-top: 10px;
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>회원가입</h2>
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="이메일" class="input-field" required>
+            <input type="text" name="nickname" placeholder="닉네임" class="input-field" required>
+            <input type="text" name="name" placeholder="이름" class="input-field" required>
+            <input type="tel" name="phone_number" placeholder="전화번호" class="input-field" required>
+            <input type="password" name="password" placeholder="비밀번호" class="input-field" required>
+            <button type="submit" class="button">회원가입</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">로그인</a></p>
+    </div>
+</body>
+</html>
