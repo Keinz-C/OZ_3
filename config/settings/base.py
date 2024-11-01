@@ -14,9 +14,9 @@ import json
 import os
 from datetime import timedelta
 from pathlib import Path
+
 from django.core.mail.backends.smtp import EmailBackend
 from rest_framework.settings import api_settings
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # REST_FRAMEWORK
     "drf_spectacular",
     "rest_framework",
