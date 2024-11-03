@@ -33,16 +33,6 @@ class UserRegistrationView(View):
             user.is_active = False  # 이메일 인증 전까지 비활성화
             user.save()
 
-            # 이메일 인증 링크 생성
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            token = account_activation_token.make_token(user)
-            activation_link = request.build_absolute_uri(reverse("activate", kwargs={"uidb64": uid, "token": token}))
-
-            # 이메일 전송
-            mail_subject = "Activate your account"
-            message = f"Hello {user.name},\n\nPlease click the link below to activate your account:\n{activation_link}"
-            send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
-
             return JsonResponse(
                 {"message": "User registered successfully. Please check your email to activate your account."},
                 status=201,
