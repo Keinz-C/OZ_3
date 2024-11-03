@@ -1,6 +1,7 @@
 from django.db import models
 
 from accounts.models import Accounts  # 계좌 정보 모델 임포트
+from constans import TRANSACTION_METHOD, TRANSACTION_TYPE
 
 
 class Transaction_History(models.Model):
@@ -13,12 +14,10 @@ class Transaction_History(models.Model):
     transaction_details = models.CharField(max_length=255)  # 세부 정보의 최대 길이 증가
 
     # 거래 유형을 선택지로 설정
-    TRANSACTION_TYPE_CHOICES = [("DEPOSIT", "입금"), ("WITHDRAWAL", "출금")]  # 입금  # 출금
-    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPE_CHOICES)
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPE)
 
     # 결제 방법을 선택지로 설정
-    PAYMENT_METHOD_CHOICES = [("CASH", "현금"), ("CARD", "카드"), ("TRANSFER", "이체")]
-    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHOD_CHOICES)
+    payment_method = models.CharField(max_length=20, choices=TRANSACTION_METHOD)
 
     transaction_datetime = models.DateTimeField(auto_now_add=True)  # 거래 생성 시점 기록
 

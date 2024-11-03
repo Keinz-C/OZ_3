@@ -1,9 +1,39 @@
-<!-- accounts/templates/accounts/account_detail.html -->
-<h2>계좌 정보</h2>
-<p>계좌 번호: {{ account.account_number }}</p>
-<p>은행 코드: {{ account.bank_code }}</p>
-<p>계좌 유형: {{ account.get_account_type_display }}</p>
-<p>잔액: {{ account.balance }}</p>
-
-<a href="{% url 'accounts:account_update' account.id %}">계좌 수정</a>
-<a href="{% url 'accounts:account_list' %}">목록으로 돌아가기</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Details</title>
+    <style>
+        /* 스타일 정의 */
+        .container {
+            margin: 0 auto;
+            max-width: 300px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Account Information</h2>
+        <p>Account Number: {{ account.account_number }}</p>
+        <p>Bank Code: {{ account.bank_code }}</p>
+        <p>Account Type: {{ account.get_account_type_display }}</p>
+        <p>Balance: {{ account.balance }}</p>
+        <a href="{% url 'accounts:account_update' account.id %}" class="button">Edit Account</a>
+        <a href="{% url 'accounts:account_list' %}" class="button">Back to List</a>
+    </div>
+</body>
+</html>
