@@ -23,10 +23,6 @@
                 <td>{{ transaction.date }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td>{{ transaction.description }}</td>
-                <td>
-                    <a href="{% url 'transaction_history_edit' transaction.id %}">Edit</a> |
-                    <a href="{% url 'transaction_history_delete' transaction.id %}">Delete</a>
-                </td>
             </tr>
             {% empty %}
             <tr>

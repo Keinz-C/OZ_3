@@ -1,9 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
-from django.core.mail import send_mail
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
@@ -11,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from .forms import UserRegistrationForm
+from .tokens import account_activation_token
 
 User = get_user_model()
 

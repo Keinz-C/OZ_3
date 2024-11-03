@@ -29,3 +29,24 @@ class Transaction_History(models.Model):
 
     def __str__(self) -> str:
         return f"{self.account_info.account_number} - {self.transaction_type} - {self.amount}"
+
+
+    # 잔액 업데이트 로직 추가
+    def save(self, *args, **kwargs):
+        # 가장 최근의 거래 내역을 조회
+        last_transaction = (
+            Transaction_History.objects.filter(account_info=self.account_info)
+            .order_by("-transaction_datetime")
+            .first()
+        )
+
+        # 기존 잔액 가져오기 (처음 거래일 경우 0으로 시작)
+        last_balance = last_transaction.post_transaction_balance if last_transaction else 0
+
+        # 거래 유형에 따라 금액 더하기 또는 빼기
+        if self.transaction_type == "DEPOSIT":
+            self.post_transaction_balance = last_balance + self.amount
+        elif self.transaction_type == "WITHDRAWAL":
+            self.post_transaction_balance = last_balance - self.amount
+
+        super().save(*args, **kwargs)
