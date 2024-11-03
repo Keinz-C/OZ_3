@@ -15,6 +15,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import environ
 from django.core.mail.backends.smtp import EmailBackend
 from rest_framework.settings import api_settings
 
@@ -25,8 +26,12 @@ secrets_file_path = os.path.join(BASE_DIR, ".config_secret/secrets.json")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
+env = environ.Env(DEBUG=(bool, True))
+
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-im8@bpwvi$@so!+7w8cp6npw^se*s#5tfy#q7xz2morb0t5dhl"
+
 if os.path.exists(secrets_file_path):
     with open(secrets_file_path) as f:
         SECRET = json.load(f)
@@ -36,7 +41,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = ["52.79.211.50"]
 
 # REST Framework 설정에 JWT 인증 설정 추가
 REST_FRAMEWORK = {
@@ -110,30 +115,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "gagyebu",
-        "USER": "mac",
-        "PASSWORD": "1234",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "gagyebu",
-        "USER": "mac",
-        "PASSWORD": "1234",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

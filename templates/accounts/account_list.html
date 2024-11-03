@@ -1,10 +1,43 @@
-<!-- accounts/templates/accounts/account_list.html -->
-<h2>계좌 목록</h2>
-<ul>
-    {% for account in accounts %}
-        <li>
-            <a href="{% url 'accounts:account_detail' account.id %}">{{ account.account_number }} - {{ account.bank_code }}</a>
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'accounts:account_create' %}">계좌 추가</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account List</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .account-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Account List</h2>
+        <ul>
+            {% for account in accounts %}
+            <li class="account-item">
+                <a href="{% url 'accounts:account_detail' account.id %}">{{ account.account_number }} - {{ account.bank_code }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'accounts:account_create' %}" class="button">Add Account</a>
+    </div>
+</body>
+</html>

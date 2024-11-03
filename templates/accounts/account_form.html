@@ -1,8 +1,38 @@
-<!-- accounts/templates/accounts/account_form.html -->
-<h2>계좌 {% if form.instance.pk %}수정{% else %}생성{% endif %}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">저장</button>
-</form>
-<a href="{% url 'accounts:account_list' %}">목록으로 돌아가기</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}Edit Account{% else %}Create Account{% endif %}</title>
+    <style>
+        .container {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{% if form.instance.pk %}Edit Account{% else %}Create Account{% endif %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Save</button>
+        </form>
+        <a href="{% url 'accounts:account_list' %}" class="button">Back to List</a>
+    </div>
+</body>
+</html>
