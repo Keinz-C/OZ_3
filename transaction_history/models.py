@@ -7,9 +7,10 @@ class Transaction_History(models.Model):
     id = models.AutoField(primary_key=True)
     account_info = models.ForeignKey(Accounts, on_delete=models.CASCADE, related_name="transactions")
     amount = models.DecimalField(max_digits=12, decimal_places=2)  # 거래 금액을 DecimalField로 설정
-    post_transaction_balance = models.DecimalField(max_digits=12, decimal_places=2)  # 거래 후 잔액도 DecimalField로 설정
+    post_transaction_balance = models.DecimalField(
+        max_digits=12, decimal_places=2
+    )  # 거래 후 잔액도 DecimalField로 설정
     transaction_details = models.CharField(max_length=255)  # 세부 정보의 최대 길이 증가
-
 
     # 거래 유형을 선택지로 설정
     TRANSACTION_TYPE_CHOICES = [("DEPOSIT", "입금"), ("WITHDRAWAL", "출금")]  # 입금  # 출금
@@ -28,5 +29,3 @@ class Transaction_History(models.Model):
 
     def __str__(self) -> str:
         return f"{self.account_info.account_number} - {self.transaction_type} - {self.amount}"
-
-
