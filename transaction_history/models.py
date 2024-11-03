@@ -30,14 +30,11 @@ class Transaction_History(models.Model):
     def __str__(self) -> str:
         return f"{self.account_info.account_number} - {self.transaction_type} - {self.amount}"
 
-
     # 잔액 업데이트 로직 추가
     def save(self, *args, **kwargs):
         # 가장 최근의 거래 내역을 조회
         last_transaction = (
-            Transaction_History.objects.filter(account_info=self.account_info)
-            .order_by("-transaction_datetime")
-            .first()
+            Transaction_History.objects.filter(account_info=self.account_info).order_by("-transaction_datetime").first()
         )
 
         # 기존 잔액 가져오기 (처음 거래일 경우 0으로 시작)
