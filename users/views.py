@@ -11,7 +11,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from .forms import UserRegistrationForm
-from .tokens import account_activation_token  # 이메일 인증 토큰 생성 유틸리티
 
 User = get_user_model()
 
