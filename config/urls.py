@@ -32,5 +32,5 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("accounts/", include("accounts.urls")),
     path("transaction/", include("transaction_history.urls")),
-    path("hello/", views.hello, name="hello"),
+    path("", views.hello, name="hello"),
 ]

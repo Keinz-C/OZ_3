@@ -17,3 +17,5 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT"),
     }
 }
+
+ROOT_URLCONF = "config.urls"
