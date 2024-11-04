@@ -1,8 +1,7 @@
 # users/urls.py
 from django.urls import path
 
-from .views import (
-    # ActivateUserView,
+from .views import (  # ActivateUserView,
     CookieTokenRefreshView,
     UserLoginView,
     UserLogoutView,
