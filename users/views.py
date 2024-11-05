@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
-from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.encoding import force_bytes, force_str
@@ -46,7 +45,7 @@ class UserLoginView(View):
     def post(self, request: HttpRequest) -> JsonResponse:
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = authenticate(email=email, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             refresh = RefreshToken.for_user(user)
             response = JsonResponse({"message": "User logged in successfully"})
@@ -78,6 +77,19 @@ class UserLogoutView(View):
         return response
 
 
+class UserProfileView(View):
+    def get(self, request: HttpRequest, user_id: int) -> JsonResponse:
+        user = get_object_or_404(User, pk=user_id)
+        profile_data = {
+            "email": user.email,
+            "nickname": user.nickname,
+            "name": user.name,
+            "phone_number": user.phone_number,
+            "last_login": user.last_login,
+        }
+        return JsonResponse(profile_data)
+
+
 # 이메일 인증을 위한 ActivateUserView 추가
 class ActivateUserView(View):
     def get(self, request: HttpRequest, uidb64: str, token: str) -> JsonResponse:
@@ -92,20 +104,6 @@ class ActivateUserView(View):
             user.save()
             return JsonResponse({"message": "Account activated successfully"}, status=200)
         return JsonResponse({"error": "Activation link is invalid"}, status=400)
-
-
-class UserProfileView(View):
-    def get(self, request: HttpRequest, user_id: int) -> JsonResponse:
-        user = get_object_or_404(User, pk=user_id)
-        profile_data = {
-            "email": user.email,
-            "nickname": user.nickname,
-            "name": user.name,
-            "phone_number": user.phone_number,
-            "last_login": user.last_login,
-        }
-
-        return JsonResponse(profile_data)
 
 
 # refresh token
