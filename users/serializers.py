@@ -12,9 +12,7 @@ class UserSerializer(serializers.ModelSerializer[Users]):
     class Meta:
         model = Users
         fields = ["id", "email", "password", "nickname", "name", "phone_number"]  # 응답할 필드들
-        extra_kwargs = {
-            "password": {"write_only": True},
-        }
+        extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data: dict[str, Any]) -> Users:
         # 비밀번호를 암호화하여 저장

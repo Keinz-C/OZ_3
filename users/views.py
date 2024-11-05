@@ -1,10 +1,15 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.http import HttpRequest, JsonResponse
+from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404, render
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -18,34 +23,36 @@ def hello(request):
     return render(request, "hello.html")
 
 
-class UserRegistrationView(View):
-    def get(self, request: HttpRequest) -> JsonResponse:
-        # GET 요청으로 등록 페이지 렌더링
+@method_decorator(csrf_exempt, name="dispatch")
+class UserRegistrationView(APIView):
+    def get(self, request) -> JsonResponse:
         return render(request, "register.html")
 
-    def post(self, request: HttpRequest) -> JsonResponse:
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password"])  # 비밀번호 암호화
-            user.is_active = False  # 이메일 인증 전까지 비활성화
-            user.save()
+    def post(self, request) -> JsonResponse:
+        from users.serializers import UserSerializer
 
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
             return JsonResponse(
                 {"message": "User registered successfully. Please check your email to activate your account."},
-                status=201,
+                status=status.HTTP_201_CREATED,
             )
-        return JsonResponse({"errors": form.errors}, status=400)
+        return JsonResponse({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserLoginView(View):
-    def get(self, request: HttpRequest) -> JsonResponse:
+class UserLoginView(APIView):
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request) -> JsonResponse:
         return render(request, "login.html")
 
-    def post(self, request: HttpRequest) -> JsonResponse:
+    @method_decorator(ensure_csrf_cookie)
+    def post(self, request) -> JsonResponse:
         email = request.POST.get("email")
         password = request.POST.get("password")
+        print(email, password)
         user = authenticate(request, email=email, password=password)
+        print(user)
         if user is not None:
             refresh = RefreshToken.for_user(user)
             response = JsonResponse({"message": "User logged in successfully"})
@@ -65,20 +72,26 @@ class UserLoginView(View):
                 secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
                 samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
             )
-            return response
-        return JsonResponse({"error": "Invalid email or password"}, status=400)
+            context = {
+                "name": user.name,
+                "nickname": user.nickname,
+                "email": user.email,
+                "phone_number": user.phone_number,
+            }
+            return JsonResponse(context)
+        return JsonResponse({"error": "Invalid email or password"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserLogoutView(View):
-    def post(self, request):
+class UserLogoutView(APIView):
+    def post(self, request) -> JsonResponse:
         response = JsonResponse({"message": "User logged out successfully"})
         response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE"])
         response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"])
         return response
 
 
-class UserProfileView(View):
-    def get(self, request: HttpRequest, user_id: int) -> JsonResponse:
+class UserProfileView(APIView):
+    def get(self, request, user_id: int) -> JsonResponse:
         user = get_object_or_404(User, pk=user_id)
         profile_data = {
             "email": user.email,
@@ -90,23 +103,6 @@ class UserProfileView(View):
         return JsonResponse(profile_data)
 
 
-# # 이메일 인증을 위한 ActivateUserView 추가
-# class ActivateUserView(View):
-#     def get(self, request: HttpRequest, uidb64: str, token: str) -> JsonResponse:
-#         try:
-#             uid = force_str(urlsafe_base64_decode(uidb64))
-#             user = User.objects.get(pk=uid)
-#         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#             user = None
-#
-#         if user is not None and account_activation_token.check_token(user, token):
-#             user.is_active = True
-#             user.save()
-#             return JsonResponse({"message": "Account activated successfully"}, status=200)
-#         return JsonResponse({"error": "Activation link is invalid"}, status=400)
-
-
-# refresh token
 class CookieTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE_REFRESH"])

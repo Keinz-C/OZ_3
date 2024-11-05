@@ -47,8 +47,10 @@ ALLOWED_HOSTS: list[str] = ["52.79.211.50"]
 
 # REST Framework 설정에 JWT 인증 설정 추가
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
 }
+
 
 # Simple JWT 설정
 SIMPLE_JWT = {
@@ -79,6 +81,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "rest_framework",
     "psycopg2",
+    "django_extensions",
     # THIRD_APPS
     "users",
     "accounts",
@@ -160,3 +163,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "users.Users"
