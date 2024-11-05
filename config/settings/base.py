@@ -27,8 +27,10 @@ secrets_file_path = os.path.join(BASE_DIR, ".config_secret/secrets.json")
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 env = environ.Env(DEBUG=(bool, True))
-
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+SECRET_KEY = env("SECRET_KEY")
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 

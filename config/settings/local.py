@@ -8,7 +8,6 @@ ALLOWED_HOSTS = []
 DEBUG = True
 
 
-SECRET_KEY = env("SECRET_KEY")
 
 #  협업
 DATABASES = {
