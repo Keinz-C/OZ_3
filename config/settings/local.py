@@ -8,7 +8,6 @@ ALLOWED_HOSTS = []
 DEBUG = True
 
 
-
 #  협업
 DATABASES = {
     "default": {
