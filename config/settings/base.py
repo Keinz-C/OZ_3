@@ -41,11 +41,14 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list[str] = ["52.79.211.50"]
+ALLOWED_HOSTS: list[str] = []
 
 # REST Framework 설정에 JWT 인증 설정 추가
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ),
 }
 
 # Simple JWT 설정
@@ -158,3 +161,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "users.Users"
+
+# settings.py
+
+AUTHENTICATION_BACKENDS = [
+    "users.auth_backends.EmailBackend",  # 이메일 인증을 위한 커스텀 백엔드
+    "django.contrib.auth.backends.ModelBackend",  # 기본 백엔드
+]
