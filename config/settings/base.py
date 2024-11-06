@@ -27,6 +27,7 @@ secrets_file_path = os.path.join(BASE_DIR, ".config_secret/secrets.json")
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 env = environ.Env(DEBUG=(bool, True))
+
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 SECRET_KEY = env("SECRET_KEY")
@@ -47,10 +48,8 @@ ALLOWED_HOSTS: list[str] = ["52.79.211.50"]
 
 # REST Framework 설정에 JWT 인증 설정 추가
 REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
 }
-
 
 # Simple JWT 설정
 SIMPLE_JWT = {
