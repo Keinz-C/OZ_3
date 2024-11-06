@@ -6,7 +6,6 @@ from .forms import TransactionHistoryForm
 from .models import Transaction_History
 
 
-@login_required
 def transaction_history_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = TransactionHistoryForm(request.POST)
@@ -18,7 +17,6 @@ def transaction_history_create(request: HttpRequest) -> HttpResponse:
     return render(request, "transaction_history/transaction_history_form.html", {"form": form})
 
 
-@login_required
 def transaction_history_list(request: HttpRequest) -> HttpResponse:
     transactions = Transaction_History.objects.all()  # Retrieve all transactions
     context = {"transactions": transactions}

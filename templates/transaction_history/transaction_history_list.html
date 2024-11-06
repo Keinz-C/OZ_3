@@ -62,9 +62,9 @@
                 {% for transaction in transactions %}
                 <tr>
                     <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.post_transaction_balance }}</td>
                     <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.transaction_details }}</td>
                 </tr>
                 {% empty %}
                 <tr>
